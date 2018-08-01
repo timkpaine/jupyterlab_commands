@@ -1,3 +1,4 @@
+import json
 from notebook.base.handlers import IPythonHandler
 from notebook.utils import url_path_join
 
@@ -7,11 +8,20 @@ class CommandsHandler(IPythonHandler):
         self.commands = commands
 
     def get(self):
-        command = self.request.get_argument('command', '')
+        command = self.get_argument('command', '')
         if command in self.commands:
             res = self.commands[command](self.request)
             self.finish(res)
-        self.finish('')
+        else:
+            self.finish('')
+
+
+class CommandsListHandler(IPythonHandler):
+    def initialize(self, commands=None):
+        self.commands = commands
+
+    def get(self):
+        self.finish(json.dumps(list(self.commands.keys())))
 
 
 def load_jupyter_server_extension(nb_server_app):
@@ -31,4 +41,5 @@ def load_jupyter_server_extension(nb_server_app):
     print('Installing jupyterlab_commands handler on path %s' % url_path_join(base_url, 'commands/get'))
 
     print('Available commands: %s' % ','.join(k for k in commands))
-    web_app.add_handlers(host_pattern, [(url_path_join(base_url, 'commands/get'), CommandsHandler, {'commands': commands})])
+    web_app.add_handlers(host_pattern, [(url_path_join(base_url, 'commands/get'), CommandsListHandler, {'commands': commands})])
+    web_app.add_handlers(host_pattern, [(url_path_join(base_url, 'commands/run'), CommandsHandler, {'commands': commands})])

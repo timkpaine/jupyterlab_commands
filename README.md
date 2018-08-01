@@ -7,6 +7,15 @@ Support for arbitrary python commands
 [![npm](https://img.shields.io/npm/v/jupyterlab_commands.svg)](https://www.npmjs.com/package/jupyterlab_commands)
 
 
+
+## About
+This code lets you inject arbitrary commands into the JLab frontend:
+![](https://raw.githubusercontent.com/timkpaine/jupyterlab_commands/master/docs/4.gif)
+![](https://raw.githubusercontent.com/timkpaine/jupyterlab_commands/master/docs/1.png)
+![](https://raw.githubusercontent.com/timkpaine/jupyterlab_commands/master/docs/2.png)
+![](https://raw.githubusercontent.com/timkpaine/jupyterlab_commands/master/docs/3.png)
+
+
 ## Install
 ```bash
 pip install jupyterlab_commands
