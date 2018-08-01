@@ -15,6 +15,14 @@ class CommandsHandler(IPythonHandler):
         else:
             self.finish('')
 
+    def post(self):
+        command = self.get_argument('command', '')
+        if command in self.commands:
+            res = self.commands[command](self.request)
+            self.finish(res)
+        else:
+            self.finish('')
+
 
 class CommandsListHandler(IPythonHandler):
     def initialize(self, commands=None):

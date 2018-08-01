@@ -67,11 +67,23 @@ function activate(app: JupyterLab,
                   return;
                 }
 
-                let path = browser.defaultBrowser.model.path || '';
+                let folder = browser.defaultBrowser.model.path || '';
+                const widget = app.shell.currentWidget;
+                const context = docManager.contextForWidget(app.shell.currentWidget);
+
+                let path = '';
+                let model = {};
+                if(context){
+                  path = context.path; 
+                  model = context.model.toJSON();
+                }
+
+                console.log(widget);
+                console.log(context);
 
                 return new Promise(function(resolve) {
                   var xhr = new XMLHttpRequest();
-                  xhr.open("GET", PageConfig.getBaseUrl() + "commands/run?command=" + encodeURI(command), true);
+                  xhr.open("POST", PageConfig.getBaseUrl() + "commands/run?command=" + encodeURI(command), true);
                   xhr.onload = function (e:any) {
                     if (xhr.readyState === 4) {
                       if (xhr.status === 200) {
@@ -91,7 +103,7 @@ function activate(app: JupyterLab,
                       }
                     }
                   };
-                  xhr.send({'path': path});
+                  xhr.send(JSON.stringify({'folder': folder, 'path': path, 'model': model}));
 
                 });
               });
