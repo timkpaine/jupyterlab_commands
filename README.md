@@ -16,9 +16,16 @@ This code lets you inject arbitrary commands into the JLab frontend. There are a
 - etc...
 
 
+#### Use
 ![](https://raw.githubusercontent.com/timkpaine/jupyterlab_commands/master/docs/4.gif)
+
+#### jupyter_notebook_config.py
 ![](https://raw.githubusercontent.com/timkpaine/jupyterlab_commands/master/docs/1.png)
+
+#### command palette
 ![](https://raw.githubusercontent.com/timkpaine/jupyterlab_commands/master/docs/2.png)
+
+#### terminal log
 ![](https://raw.githubusercontent.com/timkpaine/jupyterlab_commands/master/docs/3.png)
 
 

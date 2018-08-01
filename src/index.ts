@@ -52,8 +52,6 @@ function activate(app: JupyterLab,
     if (xhr.readyState === 4) {
       if (xhr.status === 200) {
         let commands = JSON.parse(xhr.responseText);
-        console.log(commands);
-
         for (let command of commands){
         app.commands.addCommand(command, {
           label: command,
