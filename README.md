@@ -20,9 +20,6 @@ Here is an example where I inject a custom command to produce HTML reports from 
 ![](https://raw.githubusercontent.com/timkpaine/jupyterlab_commands/master/docs/example.gif)
 
 
-#### Use
-![](https://raw.githubusercontent.com/timkpaine/jupyterlab_commands/master/docs/4.gif)
-
 #### jupyter_notebook_config.py
 ![](https://raw.githubusercontent.com/timkpaine/jupyterlab_commands/master/docs/1.png)
 
