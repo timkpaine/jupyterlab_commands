@@ -69,7 +69,8 @@ function activate(app: JupyterLab,
                   return;
                 }
 
-                // let path = browser.defaultBrowser.model.path;
+                let path = browser.defaultBrowser.model.path || '';
+
                 return new Promise(function(resolve) {
                   var xhr = new XMLHttpRequest();
                   xhr.open("GET", PageConfig.getBaseUrl() + "commands/run?command=" + encodeURI(command), true);
@@ -92,7 +93,7 @@ function activate(app: JupyterLab,
                       }
                     }
                   };
-                  xhr.send(null);
+                  xhr.send({'path': path});
 
                 });
               });
