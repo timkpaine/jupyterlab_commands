@@ -40,5 +40,5 @@ jupyter serverextension enable --py jupyterlab_commands
 install the server extension, and add the following to `jupyter_notebook_config.py`
 
 ```python3
-c.JupyterLabCommands.commands = {'command display name', python_function, ...}
+c.JupyterLabCommands.commands = {'command display name': python_function, ...}
 ```
