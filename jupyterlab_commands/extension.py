@@ -13,7 +13,7 @@ class CommandsHandler(IPythonHandler):
             res = self.commands[command](self.request)
             self.finish(res)
         else:
-            self.finish('')
+            self.finish('{}')
 
     def post(self):
         command = self.get_argument('command', '')
@@ -21,7 +21,7 @@ class CommandsHandler(IPythonHandler):
             res = self.commands[command](self.request)
             self.finish(res)
         else:
-            self.finish('')
+            self.finish('{}')
 
 
 class CommandsListHandler(IPythonHandler):

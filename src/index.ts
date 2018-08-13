@@ -87,9 +87,14 @@ function activate(app: JupyterLab,
                   xhr.onload = function (e:any) {
                     if (xhr.readyState === 4) {
                       if (xhr.status === 200) {
+                        let resp = JSON.parse(xhr.responseText);
+                        let body = '';
+                        if(resp){
+                          body = resp['body']; 
+                        }
                         showDialog({
                             title: 'Execute ' + command + ' succeeded',
-                            // body: '',
+                            body: body,
                             // focusNodeSelector: 'input',
                             buttons: [Dialog.okButton({ label: 'Ok' })]
                           }).then(() => {resolve();})
