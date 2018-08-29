@@ -9,11 +9,11 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='jupyterlab_commands',
-    version='0.0.2',
+    version='0.0.3',
     description='Arbitrary python commands for notebooks in JupyterLab',
     long_description=long_description,
     url='https://github.com/timkpaine/jupyterlab_commands',
-    download_url='https://github.com/timkpaine/jupyterlab_commands/archive/v0.0.2.tar.gz',
+    download_url='https://github.com/timkpaine/jupyterlab_commands/archive/v0.0.3.tar.gz',
     author='Tim Paine',
     author_email='t.paine154@gmail.com',
     license='Apache 2.0',
