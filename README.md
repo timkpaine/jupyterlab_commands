@@ -2,6 +2,8 @@
 Support for arbitrary python commands in the command palette. 
 
 [![Build Status](https://travis-ci.org/timkpaine/jupyterlab_commands.svg?branch=master)](https://travis-ci.org/timkpaine/jupyterlab_commands)
+[![GitHub issues](https://img.shields.io/github/issues/timkpaine/jupyterlab_commands.svg)]()
+[![codecov](https://codecov.io/gh/timkpaine/jupyterlab_commands/branch/master/graph/badge.svg)](https://codecov.io/gh/timkpaine/jupyterlab_commands)
 [![PyPI](https://img.shields.io/pypi/l/jupyterlab_commands.svg)](https://pypi.python.org/pypi/jupyterlab_commands)
 [![PyPI](https://img.shields.io/pypi/v/jupyterlab_commands.svg)](https://pypi.python.org/pypi/jupyterlab_commands)
 [![npm](https://img.shields.io/npm/v/jupyterlab_commands.svg)](https://www.npmjs.com/package/jupyterlab_commands)
