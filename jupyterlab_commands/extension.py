@@ -45,7 +45,6 @@ def load_jupyter_server_extension(nb_server_app):
     base_url = web_app.settings['base_url']
 
     host_pattern = '.*$'
-    print(base_url)
     print('Installing jupyterlab_commands handler on path %s' % url_path_join(base_url, 'commands/get'))
 
     print('Available commands: %s' % ','.join(k for k in commands))
