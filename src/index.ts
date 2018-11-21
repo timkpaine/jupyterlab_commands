@@ -132,3 +132,4 @@ function activate(app: JupyterLab,
 
 
 export default extension;
+export {activate as _activate};
