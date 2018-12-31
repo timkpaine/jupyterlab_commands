@@ -26,6 +26,10 @@ import {
   IMainMenu
 } from '@jupyterlab/mainmenu';
 
+import {
+  request, RequestResult
+} from './request';
+
 import '../style/index.css';
 
 const extension: JupyterLabPlugin<void> = {
@@ -46,86 +50,67 @@ function activate(app: JupyterLab,
                   launcher: ILauncher | null) {
 
   // grab templates from serverextension
-  var xhr = new XMLHttpRequest();
-  xhr.open("GET", PageConfig.getBaseUrl() + "commands/get", true);
-  xhr.onload = function (e:any) {
-    if (xhr.readyState === 4) {
-      if (xhr.status === 200) {
-        let commands = JSON.parse(xhr.responseText);
-        for (let command of commands){
-        app.commands.addCommand(command, {
-          label: command,
-          isEnabled: () => true,
-          execute: args => {
-            showDialog({
-                title: 'Execute ' + command + '?',
-                // body: '',
-                // focusNodeSelector: 'input',
-                buttons: [Dialog.cancelButton(), Dialog.okButton({ label: 'Ok' })]
-              }).then(result => {
-                if (result.button.label === 'CANCEL') {
-                  return;
-                }
+  request('get', PageConfig.getBaseUrl() + "commands/get").then((res: RequestResult)=>{
+    if(res.ok){
+      let commands = res.json() as [string];
+      for (let command of commands){
+      app.commands.addCommand(command, {
+        label: command,
+        isEnabled: () => true,
+        execute: args => {
+          showDialog({
+              title: 'Execute ' + command + '?',
+              // body: '',
+              // focusNodeSelector: 'input',
+              buttons: [Dialog.cancelButton(), Dialog.okButton({ label: 'Ok' })]
+            }).then(result => {
+              if (result.button.label === 'CANCEL') {
+                return;
+              }
 
-                let folder = browser.defaultBrowser.model.path || '';
-                const widget = app.shell.currentWidget;
-                const context = docManager.contextForWidget(app.shell.currentWidget);
+              let folder = browser.defaultBrowser.model.path || '';
+              const widget = app.shell.currentWidget;
+              const context = docManager.contextForWidget(app.shell.currentWidget);
 
-                let path = '';
-                let model = {};
-                if(context){
-                  path = context.path; 
-                  model = context.model.toJSON();
-                }
+              let path = '';
+              let model = {};
+              if(context){
+                path = context.path; 
+                model = context.model.toJSON();
+              }
 
-                console.log(widget);
-                console.log(context);
+              console.log(widget);
+              console.log(context);
 
-                return new Promise(function(resolve) {
-                  var xhr = new XMLHttpRequest();
-                  xhr.open("POST", PageConfig.getBaseUrl() + "commands/run?command=" + encodeURI(command), true);
-                  xhr.onload = function (e:any) {
-                    if (xhr.readyState === 4) {
-                      if (xhr.status === 200) {
-                        let resp = JSON.parse(xhr.responseText);
-                        let body = '';
-                        if(resp){
-                          body = resp['body']; 
-                        }
-                        showDialog({
-                            title: 'Execute ' + command + ' succeeded',
-                            body: body,
-                            // focusNodeSelector: 'input',
-                            buttons: [Dialog.okButton({ label: 'Ok' })]
-                          }).then(() => {resolve();})
-                      } else {
-                        showDialog({
-                            title: 'Execute ' + command + ' failed',
-                            // body: '',
-                            // focusNodeSelector: 'input',
-                            buttons: [Dialog.okButton({ label: 'Ok' })]
-                          }).then(() => {resolve();})
-                      }
+              return new Promise(function(resolve) {
+                request('post', PageConfig.getBaseUrl() + "commands/run?command=" + encodeURI(command), {}, JSON.stringify({'folder': folder, 'path': path, 'model': model})).then((res: RequestResult)=>{
+                  if(res.ok){
+                    let resp = res.json() as {[key: string]: string};
+                    let body = '';
+                    if(resp){
+                      body = resp['body']; 
                     }
-                  };
-                  xhr.send(JSON.stringify({'folder': folder, 'path': path, 'model': model}));
+                    showDialog({
+                        title: 'Execute ' + command + ' succeeded',
+                        body: body,
+                        buttons: [Dialog.okButton({ label: 'Ok' })]
+                      }).then(() => {resolve();})
+                  } else {
+                    showDialog({
+                        title: 'Execute ' + command + ' failed',
+                        buttons: [Dialog.okButton({ label: 'Ok' })]
+                      }).then(() => {resolve();})
+                  }
+                })
 
-                });
               });
-            }
-          });
-          palette.addItem({command: command, category: 'Custom Commands'});
-        }
-
-      } else {
-        console.error(xhr.statusText);
+            });
+          }
+        });
+        palette.addItem({command: command, category: 'Custom Commands'});
       }
     }
-  }.bind(this);
-  xhr.onerror = function (e) {
-    console.error(xhr.statusText);
-  };
-  xhr.send(null);
+  });
 
   console.log('JupyterLab extension jupyterlab_commands is activated!');
 };
