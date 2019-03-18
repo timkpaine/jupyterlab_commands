@@ -1,45 +1,44 @@
 import {
-  JupyterLab, JupyterLabPlugin, ILayoutRestorer
-} from '@jupyterlab/application';
+  ILayoutRestorer, JupyterLab, JupyterLabPlugin,
+} from "@jupyterlab/application";
 
 import {
-  ICommandPalette, showDialog, Dialog
-} from '@jupyterlab/apputils';
+  Dialog, ICommandPalette, showDialog,
+} from "@jupyterlab/apputils";
 
 import {
-  PageConfig
-} from '@jupyterlab/coreutils'
+  PageConfig,
+} from "@jupyterlab/coreutils";
 
 import {
-  IDocumentManager
-} from '@jupyterlab/docmanager';
+  IDocumentManager,
+} from "@jupyterlab/docmanager";
 
 import {
-  IFileBrowserFactory
-} from '@jupyterlab/filebrowser';
+  IFileBrowserFactory,
+} from "@jupyterlab/filebrowser";
 
 import {
-  ILauncher
-} from '@jupyterlab/launcher';
+  ILauncher,
+} from "@jupyterlab/launcher";
 
 import {
-  IMainMenu
-} from '@jupyterlab/mainmenu';
+  IMainMenu,
+} from "@jupyterlab/mainmenu";
 
 import {
-  request, RequestResult
-} from './request';
+  IRequestResult, request,
+} from "./request";
 
-import '../style/index.css';
+import "../style/index.css";
 
 const extension: JupyterLabPlugin<void> = {
-  id: 'jupyterlab_commands',
+  activate,
   autoStart: true,
-  requires: [IDocumentManager, ICommandPalette, ILayoutRestorer, IMainMenu, IFileBrowserFactory],
+  id: "jupyterlab_commands",
   optional: [ILauncher],
-  activate: activate
+  requires: [IDocumentManager, ICommandPalette, ILayoutRestorer, IMainMenu, IFileBrowserFactory],
 };
-
 
 function activate(app: JupyterLab,
                   docManager: IDocumentManager,
@@ -50,71 +49,71 @@ function activate(app: JupyterLab,
                   launcher: ILauncher | null) {
 
   // grab templates from serverextension
-  request('get', PageConfig.getBaseUrl() + "commands/get").then((res: RequestResult)=>{
-    if(res.ok){
-      let commands = res.json() as [string];
-      for (let command of commands){
+  request("get", PageConfig.getBaseUrl() + "commands/get").then((res: IRequestResult) => {
+    if (res.ok) {
+      const commands = res.json() as [string];
+      for (const command of commands) {
       app.commands.addCommand(command, {
-        label: command,
-        isEnabled: () => true,
-        execute: args => {
+        execute: (args) => {
           showDialog({
-              title: 'Execute ' + command + '?',
-              // body: '',
-              // focusNodeSelector: 'input',
-              buttons: [Dialog.cancelButton(), Dialog.okButton({ label: 'Ok' })]
-            }).then(result => {
-              if (result.button.label === 'CANCEL') {
+              buttons: [Dialog.cancelButton(), Dialog.okButton({ label: "Ok" })],
+              title: "Execute " + command + "?",
+            }).then((result) => {
+              if (result.button.label === "CANCEL") {
                 return;
               }
 
-              let folder = browser.defaultBrowser.model.path || '';
-              const widget = app.shell.currentWidget;
+              const folder = browser.defaultBrowser.model.path || "";
+              // const widget = app.shell.currentWidget;
               const context = docManager.contextForWidget(app.shell.currentWidget);
 
-              let path = '';
+              let path = "";
               let model = {};
-              if(context){
-                path = context.path; 
+              if (context) {
+                path = context.path;
                 model = context.model.toJSON();
               }
 
-              console.log(widget);
-              console.log(context);
-
-              return new Promise(function(resolve) {
-                request('post', PageConfig.getBaseUrl() + "commands/run?command=" + encodeURI(command), {}, JSON.stringify({'folder': folder, 'path': path, 'model': model})).then((res: RequestResult)=>{
-                  if(res.ok){
-                    let resp = res.json() as {[key: string]: string};
-                    let body = '';
-                    if(resp){
-                      body = resp['body']; 
+              return new Promise((resolve) => {
+                request("post",
+                PageConfig.getBaseUrl() + "commands/run?command=" + encodeURI(command),
+                {},
+                JSON.stringify({folder, path, model})).then(
+                  // tslint:disable-next-line: no-shadowed-variable
+                  (res: IRequestResult) => {
+                  if (res.ok) {
+                    const resp = res.json() as {[key: string]: string};
+                    let body = "";
+                    if (resp) {
+                      body = resp.body;
                     }
                     showDialog({
-                        title: 'Execute ' + command + ' succeeded',
-                        body: body,
-                        buttons: [Dialog.okButton({ label: 'Ok' })]
-                      }).then(() => {resolve();})
+                        body,
+                        buttons: [Dialog.okButton({ label: "Ok" })],
+                        title: "Execute " + command + " succeeded",
+                      }).then(() => {resolve(); });
                   } else {
                     showDialog({
-                        title: 'Execute ' + command + ' failed',
-                        buttons: [Dialog.okButton({ label: 'Ok' })]
-                      }).then(() => {resolve();})
+                        buttons: [Dialog.okButton({ label: "Ok" })],
+                        title: "Execute " + command + " failed",
+                      }).then(() => {resolve(); });
                   }
-                })
+                });
 
               });
             });
-          }
+          },
+          isEnabled: () => true,
+          label: command,
         });
-        palette.addItem({command: command, category: 'Custom Commands'});
+      palette.addItem({command, category: "Custom Commands"});
       }
     }
   });
 
-  console.log('JupyterLab extension jupyterlab_commands is activated!');
-};
-
+  // tslint:disable-next-line: no-console
+  console.log("JupyterLab extension jupyterlab_commands is activated!");
+}
 
 export default extension;
 export {activate as _activate};
