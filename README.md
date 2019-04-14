@@ -17,10 +17,6 @@ This code lets you inject arbitrary commands into the JLab frontend. There are a
 - interacting with VCS without including that interaction in the notebook
 - etc...
 
-### Example
-Here is an example where I inject a custom command to produce HTML reports from my notebooks, while hiding the code and doing some custom CSS formatting via an NBConvert template. 
-![](https://raw.githubusercontent.com/timkpaine/jupyterlab_commands/master/docs/example.gif)
-
 
 #### jupyter_notebook_config.py
 ![](https://raw.githubusercontent.com/timkpaine/jupyterlab_commands/master/docs/1.png)
