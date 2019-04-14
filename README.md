@@ -17,7 +17,7 @@ This code lets you inject arbitrary commands into the JLab frontend. There are a
 - interacting with VCS without including that interaction in the notebook
 - etc...
 
-
+## Example 
 #### jupyter_notebook_config.py
 ![](https://raw.githubusercontent.com/timkpaine/jupyterlab_commands/master/docs/1.png)
 
