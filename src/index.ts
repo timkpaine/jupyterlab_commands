@@ -1,5 +1,5 @@
 import {
-  ILayoutRestorer, JupyterLab, JupyterLabPlugin,
+  ILayoutRestorer, JupyterFrontEnd, JupyterFrontEndPlugin,
 } from "@jupyterlab/application";
 
 import {
@@ -32,7 +32,7 @@ import {
 
 import "../style/index.css";
 
-const extension: JupyterLabPlugin<void> = {
+const extension: JupyterFrontEndPlugin<void> = {
   activate,
   autoStart: true,
   id: "jupyterlab_commands",
@@ -40,7 +40,7 @@ const extension: JupyterLabPlugin<void> = {
   requires: [IDocumentManager, ICommandPalette, ILayoutRestorer, IMainMenu, IFileBrowserFactory],
 };
 
-function activate(app: JupyterLab,
+function activate(app: JupyterFrontEnd,
                   docManager: IDocumentManager,
                   palette: ICommandPalette,
                   restorer: ILayoutRestorer,
