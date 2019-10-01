@@ -28,7 +28,7 @@ import {
 
 import {
   IRequestResult, request,
-} from "./request";
+} from "requests-helper";
 
 import "../style/index.css";
 
