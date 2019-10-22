@@ -7,7 +7,7 @@ import {
 } from "@jupyterlab/apputils";
 
 import {
-  PageConfig,
+  PageConfig, URLExt,
 } from "@jupyterlab/coreutils";
 
 import {
@@ -27,6 +27,14 @@ import {
 } from "@jupyterlab/mainmenu";
 
 import {
+  INotebookTracker, NotebookPanel,
+} from "@jupyterlab/notebook";
+
+import {
+  ReadonlyJSONObject,
+} from "@phosphor/coreutils";
+
+import {
   IRequestResult, request,
 } from "requests-helper";
 
@@ -37,7 +45,7 @@ const extension: JupyterFrontEndPlugin<void> = {
   autoStart: true,
   id: "jupyterlab_commands",
   optional: [ILauncher],
-  requires: [IDocumentManager, ICommandPalette, ILayoutRestorer, IMainMenu, IFileBrowserFactory],
+  requires: [IDocumentManager, ICommandPalette, ILayoutRestorer, IMainMenu, IFileBrowserFactory, INotebookTracker],
 };
 
 function activate(app: JupyterFrontEnd,
@@ -46,7 +54,27 @@ function activate(app: JupyterFrontEnd,
                   restorer: ILayoutRestorer,
                   menu: IMainMenu,
                   browser: IFileBrowserFactory,
+                  tracker: INotebookTracker,
                   launcher: ILauncher | null) {
+
+  function hasWidget(): boolean {
+    return tracker.currentWidget !== null;
+  }
+
+  const exportPdf = "jupyterlab_commands:export-pdf";
+  const exportHtml = "jupyterlab_commands:export-html";
+  const services = app.serviceManager;
+
+  function getCurrent(args: ReadonlyJSONObject): NotebookPanel | null {
+    const widget = tracker.currentWidget;
+    const activateArg = args.activate !== false;
+
+    if (activateArg && widget) {
+      app.shell.activateById(widget.id);
+    }
+
+    return widget;
+  }
 
   // grab templates from serverextension
   request("get", PageConfig.getBaseUrl() + "commands/get").then((res: IRequestResult) => {
@@ -110,6 +138,72 @@ function activate(app: JupyterFrontEnd,
       }
     }
   });
+
+  app.commands.addCommand(exportPdf, {
+    execute: (args) => {
+      const current = getCurrent(args);
+
+      if (!current) {
+        return;
+      }
+
+      const notebookPath = URLExt.encodeParts(current.context.path);
+      const url = URLExt.join(
+        services.serverSettings.baseUrl,
+        "nbconvert",
+        "pdf_hidecode",
+        notebookPath,
+      ) + "?download=true";
+      const child = window.open("", "_blank");
+      const { context } = current;
+
+      if (context.model.dirty && !context.model.readOnly) {
+        return context.save().then(() => { child.location.assign(url); });
+      }
+
+      return new Promise<void>((resolve) => {
+        child.location.assign(url);
+        resolve(undefined);
+      });
+    },
+    isEnabled: hasWidget,
+    label: "PDF - no code",
+  });
+
+  app.commands.addCommand(exportHtml, {
+    execute: (args) => {
+      const current = getCurrent(args);
+
+      if (!current) {
+        return;
+      }
+
+      const notebookPath = URLExt.encodeParts(current.context.path);
+      const url = URLExt.join(
+        services.serverSettings.baseUrl,
+        "nbconvert",
+        "html_hidecode",
+        notebookPath,
+      ) + "?download=true";
+      const child = window.open("", "_blank");
+      const { context } = current;
+
+      if (context.model.dirty && !context.model.readOnly) {
+        return context.save().then(() => { child.location.assign(url); });
+      }
+
+      return new Promise<void>((resolve) => {
+        child.location.assign(url);
+        resolve(undefined);
+      });
+    },
+    isEnabled: hasWidget,
+    label: "HTML - no code",
+  });
+
+  // Add the command to the palette.
+  palette.addItem({command: exportPdf, category: "Custom Commands"});
+  palette.addItem({command: exportHtml, category: "Custom Commands"});
 
   // tslint:disable-next-line: no-console
   console.log("JupyterLab extension jupyterlab_commands is activated!");

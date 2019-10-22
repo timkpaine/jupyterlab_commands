@@ -21,20 +21,11 @@ This code lets you inject arbitrary commands into the JLab frontend. There are a
 #### jupyter_notebook_config.py
 ```python
 def convertMe(request, *args, **kwargs):
-    import subprocess
-    import tornado
-    import os
-    import os.path
-    import json
+    import subprocess, tornado, os, os.path, json
     data = json.loads(tornado.escape.json_decode(request.body))
     path = os.path.join(os.getcwd(), data['path'])
-    print(path)
-    print(path)
-    print(path)
-    print(path)
-    print(path)
     subprocess.run(["jupyter", "nbconvert", path, '--template', '/Users/theocean154/.jupyter/test.tpl', '--to', 'html'])
-    return {'body': 'testing'}
+    return {'body': 'ok'}
 
 c.JupyterLabCommands.commands = {'sample_command': convertMe}
 ```
@@ -44,6 +35,9 @@ c.JupyterLabCommands.commands = {'sample_command': convertMe}
 
 #### terminal log
 ![](https://raw.githubusercontent.com/timkpaine/jupyterlab_commands/master/docs/3.png)
+
+#### No Code
+![](https://raw.githubusercontent.com/timkpaine/jupyterlab_commands/master/docs/4.png)
 
 
 ## Install

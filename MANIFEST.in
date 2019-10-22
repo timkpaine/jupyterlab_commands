@@ -1,6 +1,7 @@
 include LICENSE
 include README.md
 include CONTRIBUTING.md
+recursive-include jupyterlab_commands/nbconvert_functions/hideinput/templates/ *
 
 include requirements.txt
 include setup.cfg
