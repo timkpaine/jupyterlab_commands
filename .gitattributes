@@ -1,0 +1,2 @@
+*.tpl linguist-vendored
+docs/* linguist-documentation
