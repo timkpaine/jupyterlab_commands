@@ -36,6 +36,9 @@ c.JupyterLabCommands.commands = {'sample_command': convertMe}
 #### terminal log
 ![](https://raw.githubusercontent.com/timkpaine/jupyterlab_commands/master/docs/3.png)
 
+#### No Code
+![](https://raw.githubusercontent.com/timkpaine/jupyterlab_commands/master/docs/4.png)
+
 
 ## Install
 ```bash

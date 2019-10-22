@@ -164,3 +164,4 @@ ENV/
 
 .DS_Store
 yarn.lock
+.autoversion
