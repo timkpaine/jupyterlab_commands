@@ -71,11 +71,16 @@ setup(
 
     keywords='jupyter jupyterlab',
     packages=find_packages(exclude=['tests', ]),
-    install_requires=requires,
+    package_data={'jupyterlab_commands': ['jupyterlab_commands/nbconvert_functions/hideinput/templates/*']},
+    include_package_data=True,
+    zip_safe=False,
+    entry_points={
+        'nbconvert.exporters': [
+            'pdf_hidecode = jupyterlab_commands.nbconvert_functions.hideinput.exporters:PDFHideCodeExporter',
+            'html_hidecode = jupyterlab_commands.nbconvert_functions.hideinput.exporters:HTMLHideCodeExporter',
+        ],
+    },
     extras_require={
         'dev': ['pytest', 'pytest-cov', 'pylint', 'flake8', 'bumpversion']
     },
-    include_package_data=True,
-    zip_safe=False,
-
 )
