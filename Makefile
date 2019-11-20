@@ -35,6 +35,10 @@ install:  ## install to site-packages
 serverextension: install ## enable serverextension
 	jupyter serverextension enable --py jupyterlab_commands
 
+fix:  ## run autopep8/tslint fix
+	autopep8 --in-place -r -a -a crowdsource/
+	./node_modules/.bin/tslint --fix src/ts/**/*.ts
+
 js:  ## build javascript
 	yarn
 	yarn build
