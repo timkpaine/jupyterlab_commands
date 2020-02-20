@@ -22,8 +22,9 @@ clean: ## clean the repository
 	find . -name "__pycache__" | xargs  rm -rf 
 	find . -name "*.pyc" | xargs rm -rf 
 	find . -name ".ipynb_checkpoints" | xargs  rm -rf 
-	rm -rf .coverage cover htmlcov logs build dist *.egg-info lib node_modules
-	# make -C ./docs clean
+	rm -rf coverage lab-dist cover htmlcov logs build dist *.egg-info lib node_modules *.log
+	git clean -fd
+	make -C ./docs clean
 
 docs:  ## make documentation
 	make -C ./docs html
