@@ -1,14 +1,12 @@
 # jupyterlab_commands
 Support for arbitrary python commands in the command palette. 
 
-[![Build Status](https://travis-ci.org/timkpaine/jupyterlab_commands.svg?branch=master)](https://travis-ci.org/timkpaine/jupyterlab_commands)
+[![Build Status](https://dev.azure.com/tpaine154/jupyter/_apis/build/status/timkpaine.jupyterlab_commands?branchName=master)](https://dev.azure.com/tpaine154/jupyter/_build/latest?definitionId=14&branchName=master)
 [![GitHub issues](https://img.shields.io/github/issues/timkpaine/jupyterlab_commands.svg)]()
-[![codecov](https://codecov.io/gh/timkpaine/jupyterlab_commands/branch/master/graph/badge.svg)](https://codecov.io/gh/timkpaine/jupyterlab_commands)
+[![Coverage](https://img.shields.io/azure-devops/coverage/tpaine154/jupyter/14)](https://dev.azure.com/tpaine154/jupyter/_build?definitionId=14&_a=summary)
 [![PyPI](https://img.shields.io/pypi/l/jupyterlab_commands.svg)](https://pypi.python.org/pypi/jupyterlab_commands)
 [![PyPI](https://img.shields.io/pypi/v/jupyterlab_commands.svg)](https://pypi.python.org/pypi/jupyterlab_commands)
 [![npm](https://img.shields.io/npm/v/jupyterlab_commands.svg)](https://www.npmjs.com/package/jupyterlab_commands)
-
-
 
 ## About
 This code lets you inject arbitrary commands into the JLab frontend. There are a variety of reasons why one might want to execute python commands outside of a notebook and a console:
@@ -16,6 +14,13 @@ This code lets you inject arbitrary commands into the JLab frontend. There are a
 - a predefined NBConvert function that you dont want included in the converted result
 - interacting with VCS without including that interaction in the notebook
 - etc...
+
+## Installation
+```
+pip install jupyterlab_commands
+jupyter labextension install jupyterlab_commands
+jupyter serverextension enable --py jupyterlab_commands
+```
 
 ## Example 
 #### jupyter_notebook_config.py

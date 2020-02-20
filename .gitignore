@@ -166,3 +166,4 @@ ENV/
 yarn.lock
 .autoversion
 docs/api
+docs/index.md
