@@ -2,10 +2,10 @@ testjs: ## Clean and Make js tests
 	yarn test
 
 testpy: ## Clean and Make unit tests
-	python3.7 -m pytest -v tests --cov=jupyterlab_commands
+	python3.7 -m pytest -v jupyterlab_commands/tests --cov=jupyterlab_commands
 
 tests: lint ## run the tests for travis CI
-	python3.7 -m pytest -v tests --cov=jupyterlab_commands --junitxml=python_junit.xml --cov-report=xml --cov-branch
+	python3.7 -m pytest -v jupyterlab_commands/tests --cov=jupyterlab_commands --junitxml=python_junit.xml --cov-report=xml --cov-branch
 	yarn test
 
 lint: ## run linter
