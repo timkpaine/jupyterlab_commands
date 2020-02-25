@@ -79,6 +79,6 @@ setup(
         ],
     },
     extras_require={
-        'dev': ['pytest', 'pytest-cov', 'pylint', 'flake8', 'bumpversion', 'mock']
+        'dev': requires + ['pytest', 'pytest-cov', 'pylint', 'flake8', 'bumpversion', 'mock']
     },
 )
