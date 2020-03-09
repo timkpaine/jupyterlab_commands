@@ -29,7 +29,7 @@ dev_requires = requires + [
     'pylint',
     'flake8',
     'bump2version',
-    'mock'
+    'mock',
     'autopep8'
 ]
 
