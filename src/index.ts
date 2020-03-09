@@ -32,7 +32,7 @@ import {
 
 import {
   ReadonlyJSONObject,
-} from "@phosphor/coreutils";
+} from "@lumino/coreutils";
 
 import {
   IRequestResult, request,

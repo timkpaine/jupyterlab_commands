@@ -4,27 +4,30 @@ testjs: ## Clean and Make js tests
 testpy: ## Clean and Make unit tests
 	python3.7 -m pytest -v jupyterlab_commands/tests --cov=jupyterlab_commands
 
-tests: lint ## run the tests for travis CI
+tests: lint ## run the tests
 	python3.7 -m pytest -v jupyterlab_commands/tests --cov=jupyterlab_commands --junitxml=python_junit.xml --cov-report=xml --cov-branch
 	yarn test
 
 lint: ## run linter
-	flake8 jupyterlab_commands 
+	flake8 jupyterlab_commands setup.py
 	yarn lint
+
+fix:  ## run autopep8/tslint fix
+	autopep8 --in-place -r -a -a jupyterlab_commands/
+	./node_modules/.bin/tslint --fix src/*
 
 annotate: ## MyPy type annotation check
 	mypy -s jupyterlab_commands
 
 annotate_l: ## MyPy type annotation check - count only
-	mypy -s jupyterlab_commands | wc -l 
+	mypy -s jupyterlab_commands | wc -l
 
 clean: ## clean the repository
-	find . -name "__pycache__" | xargs  rm -rf 
-	find . -name "*.pyc" | xargs rm -rf 
-	find . -name ".ipynb_checkpoints" | xargs  rm -rf 
-	rm -rf coverage lab-dist cover htmlcov logs build dist *.egg-info lib node_modules *.log
-	git clean -fd
-	make -C ./docs clean
+	find . -name "__pycache__" | xargs  rm -rf
+	find . -name "*.pyc" | xargs rm -rf
+	find . -name ".ipynb_checkpoints" | xargs  rm -rf
+	rm -rf .coverage coverage cover htmlcov logs build dist *.egg-info lib node_modules
+	# make -C ./docs clean
 
 docs:  ## make documentation
 	make -C ./docs html
@@ -36,26 +39,20 @@ install:  ## install to site-packages
 serverextension: install ## enable serverextension
 	jupyter serverextension enable --py jupyterlab_commands
 
-fix:  ## run autopep8/tslint fix
-	autopep8 --in-place -r -a -a jupyterlab_commands/
-	./node_modules/.bin/tslint --fix src/ts/**/*.ts
-
 js:  ## build javascript
 	yarn
 	yarn build
 
-fix:  ## run autopep8/tslint fix
-	autopep8 --in-place -r -a -a jupyterlab_commands/
-	./node_modules/.bin/tslint --fix src/ts/**/*.ts
-
 labextension: js ## enable labextension
 	jupyter labextension install .
 
-dist: js  ## dist to pypi
+dist: js  ## create dists
 	rm -rf dist build
-	python3.7 setup.py sdist
-	python3.7 setup.py bdist_wheel
+	python3.7 setup.py sdist bdist_wheel
+
+publish: dist  ## dist to pypi and npm
 	twine check dist/* && twine upload dist/*
+	npm publish
 
 # Thanks to Francoise at marmelab.com for this
 .DEFAULT_GOAL := help

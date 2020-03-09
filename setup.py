@@ -18,8 +18,20 @@ version = get_version(pjoin(here, name, '_version.py'))
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
-with open(path.join(here, 'requirements.txt'), encoding='utf-8') as f:
-    requires = f.read().split()
+requires = [
+    'jupyterlab>=1.0.0',
+    'notebook>=6.0.3'
+]
+
+dev_requires = requires + [
+    'pytest',
+    'pytest-cov',
+    'pylint',
+    'flake8',
+    'bump2version',
+    'mock'
+    'autopep8'
+]
 
 
 data_spec = [
@@ -79,6 +91,6 @@ setup(
         ],
     },
     extras_require={
-        'dev': requires + ['pytest', 'pytest-cov', 'pylint', 'flake8', 'bumpversion', 'mock']
+        'dev': dev_requires,
     },
 )
