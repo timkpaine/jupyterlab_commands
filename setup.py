@@ -61,6 +61,7 @@ setup(
     version=version,
     description='Arbitrary python commands for notebooks in JupyterLab',
     long_description=long_description,
+    long_description_content_type='text/markdown',
     url='https://github.com/timkpaine/jupyterlab_commands',
     author='Tim Paine',
     author_email='t.paine154@gmail.com',
