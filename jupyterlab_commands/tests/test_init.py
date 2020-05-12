@@ -24,4 +24,4 @@ class TestInit:
 
     def test__jupyter_server_extension_paths(self):
         assert _jupyter_server_extension_paths() ==  \
-            [{"module": "jupyterlab_commands.extension"}, {"module": "jupyterlab_commands.nbconvert_functions.hideinput.extension", }]
+            [{"module": "jupyterlab_commands.extension"}]
