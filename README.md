@@ -42,6 +42,7 @@ c.JupyterLabCommands.commands = {'sample_command': convertMe}
 ![](https://raw.githubusercontent.com/timkpaine/jupyterlab_commands/master/docs/3.png)
 
 #### No Code
+Moved to [jupyterlab_nbconvert_nocode](https://github.com/timkpaine/jupyterlab_nbconvert_nocode)
 ![](https://raw.githubusercontent.com/timkpaine/jupyterlab_commands/master/docs/4.png)
 
 
