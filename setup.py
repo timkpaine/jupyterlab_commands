@@ -82,15 +82,7 @@ setup(
 
     keywords='jupyter jupyterlab',
     packages=find_packages(exclude=['tests', ]),
-    include_package_data=True,
-    package_data={'': ['jupyterlab_commands/nbconvert_functions/hideinput/templates/*']},
     zip_safe=False,
-    entry_points={
-        'nbconvert.exporters': [
-            'pdf_hidecode = jupyterlab_commands.nbconvert_functions.hideinput.exporters:PDFHideCodeExporter',
-            'html_hidecode = jupyterlab_commands.nbconvert_functions.hideinput.exporters:HTMLHideCodeExporter',
-        ],
-    },
     extras_require={
         'dev': dev_requires,
     },

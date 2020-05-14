@@ -1,7 +1,6 @@
 include LICENSE
 include README.md
 include CONTRIBUTING.md
-recursive-include jupyterlab_commands/nbconvert_functions/hideinput/templates/ *
 
 include requirements.txt
 include setup.cfg
@@ -17,9 +16,7 @@ graft docs
 exclude docs/\#*
 
 # docs subdirs we want to skip
-prune docs/build
-prune docs/gh-pages
-prune docs/dist
+prune docs
 
 # Webapp files
 include package.json
