@@ -9,6 +9,7 @@ include .bumpversion.cfg
 include Makefile
 
 graft js
+prune docs
 prune js/lib
 prune js/build
 prune js/dist
@@ -22,3 +23,5 @@ global-exclude *.pyc
 global-exclude *.pyo
 global-exclude .git
 global-exclude .ipynb_checkpoints
+global-exclude .DS_Store
+
