@@ -1,4 +1,5 @@
 import json
+import tornado.web
 from notebook.base.handlers import IPythonHandler
 from notebook.utils import url_path_join
 
@@ -7,6 +8,7 @@ class CommandsHandler(IPythonHandler):
     def initialize(self, commands=None):
         self.commands = commands
 
+    @tornado.web.authenticated
     def get(self):
         command = self.get_argument('command', '')
         if command in self.commands:
@@ -15,6 +17,7 @@ class CommandsHandler(IPythonHandler):
         else:
             self.finish('{}')
 
+    @tornado.web.authenticated
     def post(self):
         command = self.get_argument('command', '')
         if command in self.commands:
@@ -28,6 +31,7 @@ class CommandsListHandler(IPythonHandler):
     def initialize(self, commands=None):
         self.commands = commands
 
+    @tornado.web.authenticated
     def get(self):
         self.finish(json.dumps(list(self.commands.keys())))
 
