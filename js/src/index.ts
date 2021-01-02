@@ -1,5 +1,5 @@
 import {
-  ILayoutRestorer, JupyterFrontEnd, JupyterFrontEndPlugin,
+  JupyterFrontEnd, JupyterFrontEndPlugin,
 } from "@jupyterlab/application";
 
 import {
@@ -23,14 +23,6 @@ import {
 } from "@jupyterlab/launcher";
 
 import {
-  IMainMenu,
-} from "@jupyterlab/mainmenu";
-
-import {
-  INotebookTracker,
-} from "@jupyterlab/notebook";
-
-import {
   IRequestResult, request,
 } from "requests-helper";
 
@@ -41,17 +33,13 @@ const extension: JupyterFrontEndPlugin<void> = {
   autoStart: true,
   id: "jupyterlab_commands",
   optional: [ILauncher],
-  requires: [IDocumentManager, ICommandPalette, ILayoutRestorer, IMainMenu, IFileBrowserFactory, INotebookTracker],
+  requires: [IDocumentManager, ICommandPalette, IFileBrowserFactory],
 };
 
 function activate(app: JupyterFrontEnd,
                   docManager: IDocumentManager,
                   palette: ICommandPalette,
-                  restorer: ILayoutRestorer,
-                  menu: IMainMenu,
-                  browser: IFileBrowserFactory,
-                  tracker: INotebookTracker,
-                  launcher: ILauncher | null) {
+                  browser: IFileBrowserFactory) {
 
   // grab templates from serverextension
   request("get", PageConfig.getBaseUrl() + "commands/get").then((res: IRequestResult) => {
