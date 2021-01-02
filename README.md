@@ -1,9 +1,9 @@
 # jupyterlab_commands
 Support for arbitrary python commands in the command palette. 
 
-[![Build Status](https://dev.azure.com/tpaine154/jupyter/_apis/build/status/timkpaine.jupyterlab_commands?branchName=master)](https://dev.azure.com/tpaine154/jupyter/_build/latest?definitionId=14&branchName=master)
+[![Build Status](https://dev.azure.com/tpaine154/jupyter/_apis/build/status/timkpaine.jupyterlab_commands?branchName=main)](https://dev.azure.com/tpaine154/jupyter/_build/latest?definitionId=14&branchName=main)
 [![GitHub issues](https://img.shields.io/github/issues/timkpaine/jupyterlab_commands.svg)]()
-[![Coverage](https://img.shields.io/azure-devops/coverage/tpaine154/jupyter/14/master)](https://dev.azure.com/tpaine154/jupyter/_build?definitionId=14&_a=summary)
+[![Coverage](https://img.shields.io/azure-devops/coverage/tpaine154/jupyter/14/main)](https://dev.azure.com/tpaine154/jupyter/_build?definitionId=14&_a=summary)
 [![PyPI](https://img.shields.io/pypi/l/jupyterlab_commands.svg)](https://pypi.python.org/pypi/jupyterlab_commands)
 [![PyPI](https://img.shields.io/pypi/v/jupyterlab_commands.svg)](https://pypi.python.org/pypi/jupyterlab_commands)
 [![npm](https://img.shields.io/npm/v/jupyterlab_commands.svg)](https://www.npmjs.com/package/jupyterlab_commands)
@@ -36,14 +36,14 @@ c.JupyterLabCommands.commands = {'sample_command': convertMe}
 ```
 
 #### command palette
-![](https://raw.githubusercontent.com/timkpaine/jupyterlab_commands/master/docs/2.png)
+![](https://raw.githubusercontent.com/timkpaine/jupyterlab_commands/main/docs/2.png)
 
 #### terminal log
-![](https://raw.githubusercontent.com/timkpaine/jupyterlab_commands/master/docs/3.png)
+![](https://raw.githubusercontent.com/timkpaine/jupyterlab_commands/main/docs/3.png)
 
 #### No Code
 Moved to [jupyterlab_nbconvert_nocode](https://github.com/timkpaine/jupyterlab_nbconvert_nocode)
-![](https://raw.githubusercontent.com/timkpaine/jupyterlab_commands/master/docs/4.png)
+![](https://raw.githubusercontent.com/timkpaine/jupyterlab_commands/main/docs/4.png)
 
 
 ## Install
