@@ -23,5 +23,6 @@ class TestInit:
         # teardown_class() after any methods in this class
 
     def test__jupyter_server_extension_paths(self):
-        assert _jupyter_server_extension_paths() ==  \
-            [{"module": "jupyterlab_commands.extension"}]
+        assert _jupyter_server_extension_paths() == [
+            {"module": "jupyterlab_commands.extension"}
+        ]
