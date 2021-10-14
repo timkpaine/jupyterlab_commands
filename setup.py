@@ -13,7 +13,7 @@ from jupyter_packaging import (
 
 pjoin = path.join
 
-ensure_python(("2.7", ">=3.3"))
+ensure_python(">=3.7")
 
 name = "jupyterlab_commands"
 here = path.abspath(path.dirname(__file__))
@@ -67,14 +67,13 @@ setup(
     author_email="t.paine154@gmail.com",
     license="Apache 2.0",
     classifiers=[
-        "Development Status :: 3 - Alpha",
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.7",
+        "Development Status :: 4 - Beta",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Framework :: Jupyter",
+        "Framework :: Jupyter :: JupyterLab",
     ],
     cmdclass=cmdclass,
     keywords="jupyter jupyterlab",
