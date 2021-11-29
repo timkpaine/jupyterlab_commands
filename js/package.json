@@ -14,7 +14,7 @@
     "build:lab": "rimraf ../lab-dist && mkdirp ../lab-dist && cd ../lab-dist && npm pack ../js/",
     "build:all": "npm run build && npm run build:lab",
     "clean": "rimraf lib",
-    "fix": "eslint -c .eslintrc.js --ext .ts --fix src/ tests/",
+    "fix": "yarn lint --fix",
     "lint": "eslint -c .eslintrc.js --ext .ts src/ tests/",
     "prepublishOnly": "npm run build",
     "test": "jest --coverage --collectCoverageFrom=src/*.{ts}"

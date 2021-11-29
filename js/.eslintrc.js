@@ -21,7 +21,10 @@ module.exports = {
     {
       files: ["tests/*.test.*"],
       rules: {
+        "@typescript-eslint/no-unsafe-assignment": "off",
         "@typescript-eslint/no-unsafe-call": "off",
+        "@typescript-eslint/no-unused-expressions": "off",
+        "@typescript-eslint/no-var-requires": "off",
       },
     },
   ],
