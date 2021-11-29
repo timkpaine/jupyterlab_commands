@@ -11,7 +11,7 @@ from jupyter_packaging import (
 )
 
 pjoin = path.join
-
+ 
 name = "jupyterlab_commands"
 here = path.abspath(path.dirname(__file__))
 jshere = path.abspath(path.join(here, "js"))
