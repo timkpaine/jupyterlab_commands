@@ -17,6 +17,14 @@ module.exports = {
     "@typescript-eslint",
     "@typescript-eslint/tslint",
   ],
+  overrides: [
+    {
+      files: ["tests/*.test.*"],
+      rules: {
+        "@typescript-eslint/no-unsafe-call": "off",
+      },
+    },
+  ],
   rules: {
     "@typescript-eslint/array-type": [
       "error",
