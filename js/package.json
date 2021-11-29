@@ -62,6 +62,7 @@
     "eslint-plugin-unicorn": "^39.0.0",
     "isomorphic-fetch": "^3.0.0",
     "jest": "^27.4.0",
+    "jest-raw-loader": "^1.0.1",
     "jest-transform-css": "^3.0.0",
     "mkdirp": "^1.0.4",
     "rimraf": "^3.0.2",
