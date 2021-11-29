@@ -168,3 +168,4 @@ yarn.lock
 docs/api
 docs/index.md
 python_junit.xml
+*.tsbuildinfo

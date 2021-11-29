@@ -22,6 +22,8 @@ import {
   ILauncher,
 } from "@jupyterlab/launcher";
 
+import { PartialJSONValue } from "@lumino/coreutils";
+
 import {
   IRequestResult, request,
 } from "requests-helper";
@@ -57,11 +59,16 @@ async function activate(app: JupyterFrontEnd,
           }
 
           const folder = browser.defaultBrowser.model.path || "";
-          // const widget = app.shell.currentWidget;
+
+          if (!app.shell.currentWidget) {
+            // need a current widget
+            return;
+          }
+
           const context = docManager.contextForWidget(app.shell.currentWidget);
 
           let path = "";
-          let model = {};
+          let model: PartialJSONValue = {};
           if (context) {
             path = context.path;
             model = context.model.toJSON();
