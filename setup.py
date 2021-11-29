@@ -7,13 +7,10 @@ from jupyter_packaging import (
     install_npm,
     ensure_targets,
     combine_commands,
-    ensure_python,
     get_version,
 )
 
 pjoin = path.join
-
-ensure_python(">=3.7")
 
 name = "jupyterlab_commands"
 here = path.abspath(path.dirname(__file__))
@@ -72,6 +69,7 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
         "Framework :: Jupyter",
         "Framework :: Jupyter :: JupyterLab",
     ],
@@ -86,4 +84,5 @@ setup(
     extras_require={
         "dev": requires_dev,
     },
+    python_requires=">=3.7",
 )
