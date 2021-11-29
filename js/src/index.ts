@@ -22,6 +22,8 @@ import {
   ILauncher,
 } from "@jupyterlab/launcher";
 
+import { PartialJSONValue } from "@lumino/coreutils";
+
 import {
   IRequestResult, request,
 } from "requests-helper";
@@ -36,77 +38,71 @@ const extension: JupyterFrontEndPlugin<void> = {
   requires: [IDocumentManager, ICommandPalette, IFileBrowserFactory],
 };
 
-function activate(app: JupyterFrontEnd,
-                  docManager: IDocumentManager,
-                  palette: ICommandPalette,
-                  browser: IFileBrowserFactory) {
+async function activate(app: JupyterFrontEnd,
+                        docManager: IDocumentManager,
+                        palette: ICommandPalette,
+                        browser: IFileBrowserFactory) {
 
   // grab templates from serverextension
-  request("get", PageConfig.getBaseUrl() + "commands/get").then((res: IRequestResult) => {
-    if (res.ok) {
-      const commands = res.json() as [string];
-      for (const command of commands) {
-        app.commands.addCommand(command, {
-          execute: (args) => {
-            showDialog({
-              buttons: [Dialog.cancelButton(), Dialog.okButton({ label: "Ok" })],
-              title: "Execute " + command + "?",
-            }).then((result) => {
-              if (result.button.label === "Cancel") {
-                return;
-              }
+  const res: IRequestResult = await request("get", PageConfig.getBaseUrl() + "commands/get");
+  if (res.ok) {
+    const commands = res.json() as [string];
+    for (const command of commands) {
+      app.commands.addCommand(command, {
+        execute: async () => {
+          const result = await showDialog({
+            buttons: [Dialog.cancelButton(), Dialog.okButton({ label: "Ok" })],
+            title: "Execute " + command + "?",
+          });
+          if (result.button.label === "Cancel") {
+            return;
+          }
 
-              const folder = browser.defaultBrowser.model.path || "";
-              // const widget = app.shell.currentWidget;
-              const context = docManager.contextForWidget(app.shell.currentWidget);
+          const folder = browser.defaultBrowser.model.path || "";
 
-              let path = "";
-              let model = {};
-              if (context) {
-                path = context.path;
-                model = context.model.toJSON();
-              }
+          if (!app.shell.currentWidget) {
+            // need a current widget
+            return;
+          }
 
-              return new Promise((resolve) => {
-                request("post",
-                  PageConfig.getBaseUrl() + "commands/run?command=" + encodeURI(command),
-                  {},
-                  JSON.stringify({folder, path, model})).then(
-                  // eslint-disable-next-line no-shadow
-                  (res: IRequestResult) => {
-                    if (res.ok) {
-                      const resp: any = res.json();
-                      let body = "";
-                      if (resp) {
-                        body = resp.body;
-                      }
-                      showDialog({
-                        body,
-                        buttons: [Dialog.okButton({ label: "Ok" })],
-                        title: "Execute " + command + " succeeded",
-                      }).then(() => {
-                        resolve();
-                      });
-                    } else {
-                      showDialog({
-                        buttons: [Dialog.okButton({ label: "Ok" })],
-                        title: "Execute " + command + " failed",
-                      }).then(() => {
-                        resolve();
-                      });
-                    }
-                  });
+          const context = docManager.contextForWidget(app.shell.currentWidget);
 
-              });
+          let path = "";
+          let model: PartialJSONValue = {};
+          if (context) {
+            path = context.path;
+            model = context.model.toJSON();
+          }
+
+          // eslint-disable-next-line no-shadow
+          const res: IRequestResult = await request("post",
+            PageConfig.getBaseUrl() + "commands/run?command=" + encodeURI(command),
+            {},
+            JSON.stringify({folder, path, model}));
+          if (res.ok) {
+            const resp: {[key: string]: string} = res.json();
+            let body = "";
+            if (resp) {
+              body = resp.body;
+            }
+            await showDialog({
+              body,
+              buttons: [Dialog.okButton({ label: "Ok" })],
+              title: "Execute " + command + " succeeded",
             });
-          },
-          isEnabled: () => true,
-          label: command,
-        });
-        palette.addItem({command, category: "Custom Commands"});
-      }
+          } else {
+            await showDialog({
+              buttons: [Dialog.okButton({ label: "Ok" })],
+              title: "Execute " + command + " failed",
+            });
+          }
+        },
+        isEnabled: () => true,
+        label: command,
+      });
+      palette.addItem({command, category: "Custom Commands"});
     }
-  });
+  }
 
   // eslint-disable-next-line no-console
   console.log("JupyterLab extension jupyterlab_commands is activated!");
