@@ -38,7 +38,11 @@ requires_dev = requires + [
 
 data_spec = [
     # Lab extension installed by default:
-    ("share/jupyter/lab/extensions", "lab-dist", "jupyterlab_commands-*.tgz"),
+    (
+        "share/jupyter/labextensions/jupyterlab_commands",
+        "jupyterlab_commands/labextension",
+        "**",
+    ),
     # Config to enable server extension by default:
     ("etc/jupyter/jupyter_server_config.d", "jupyter-config", "*.json"),
 ]
@@ -48,7 +52,11 @@ cmdclass = create_cmdclass("js", data_files_spec=data_spec)
 cmdclass["js"] = combine_commands(
     install_npm(jshere, build_cmd="build:all"),
     ensure_targets(
-        [pjoin(jshere, "lib", "index.js"), pjoin(jshere, "style", "index.css")]
+        [
+            pjoin(jshere, "lib", "index.js"),
+            pjoin(jshere, "style", "index.css"),
+            pjoin(here, "jupyterlab_commands", "labextension", "package.json"),
+        ]
     ),
 )
 
