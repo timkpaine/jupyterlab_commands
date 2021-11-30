@@ -18,7 +18,7 @@
     "fix": "yarn lint --fix",
     "lint": "eslint -c .eslintrc.js --ext .js src/ tests/",
     "prepublishOnly": "npm run build",
-    "test": "jest --coverage --collectCoverageFrom=src/*.{ts}"
+    "test": "jest --coverage --collectCoverageFrom=src/*.{js}"
   },
   "files": [
     "lib/**/*.{d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf}",
