@@ -35,7 +35,7 @@ serverextension: install ## enable serverextension
 
 js:  ## build javascript
 	cd js; yarn
-	cd js; yarn build
+	cd js; yarn build:all
 
 labextension: js ## enable labextension
 	cd js; python -m jupyter labextension install .
