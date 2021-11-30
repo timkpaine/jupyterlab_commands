@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "build": "babel src/ --source-maps --out-dir lib/",
-    "build:lab": "rimraf ../jupyterlab_templates/labextension && jupyter labextension build .",
+    "build:lab": "rimraf ../jupyterlab_commands/labextension && jupyter labextension build .",
     "build:all": "npm run build && npm run build:lab",
     "clean": "rimraf lib",
     "fix": "yarn lint --fix",
