@@ -7,6 +7,8 @@ include setup.cfg
 include pyproject.toml
 include Makefile
 
+include jupyterlab_commands/extension/jupyterlab_commands.json
+
 # grab js
 graft js
 prune js/coverage

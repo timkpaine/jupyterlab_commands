@@ -7,8 +7,8 @@ on:
   pull_request:
 
 concurrency:
-   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
-   cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -39,22 +39,25 @@ jobs:
 
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip setuptools wheel twine
-        python -m pip install -e .[dev]
-        cd js; yarn
+        make develop
+
+    - name: Build 
+      run: |
+        make build
 
     - name: Lint
       run: |
         make lint
 
+    - name: Checks
+      run: |
+        make checks
+      if: ${{ github.event_name == matrix.event-name || matrix.os == 'ubuntu-latest' }}
+
     - name: Test
       run: |
         make tests
       if: ${{ github.event_name == matrix.event-name || matrix.os == 'ubuntu-latest' }}
-
-    - name: Twine check
-      run: |
-        make dist
 
     - name: Upload test results
       uses: actions/upload-artifact@v2
@@ -67,7 +70,12 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       with:
         files: python_junit.xml
-      if: ${{ github.event_name == matrix.event-name || matrix.os == 'ubuntu-latest' }}
+      if: ${{ matrix.os == 'ubuntu-latest' }}
 
     - name: Upload coverage
       uses: codecov/codecov-action@v1
+
+    - name: Twine check
+      run: |
+        make dist
+
