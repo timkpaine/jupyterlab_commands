@@ -1,53 +1,67 @@
+testpy: ## Clean and Make unit tests
+	python -m pytest -v jupyterlab_commands/tests --cov=jupyterlab_commands --junitxml=python_junit.xml --cov-report=xml --cov-branch
+
 testjs: ## Clean and Make js tests
 	cd js; yarn test
 
-testpy: ## Clean and Make unit tests
-	python -m pytest -v jupyterlab_commands/tests --cov=jupyterlab_commands
+test: tests
+tests: testpy testjs ## run the tests
 
-tests: lint ## run the tests
-	python -m pytest -v jupyterlab_commands/tests --cov=jupyterlab_commands --junitxml=python_junit.xml --cov-report=xml --cov-branch
-	cd js; yarn test
-
-lint: ## run linter
+lintpy:  ## Black/flake8 python
+	python -m black --check jupyterlab_commands setup.py
 	python -m flake8 jupyterlab_commands setup.py
+
+lintjs:  ## ESlint javascript
 	cd js; yarn lint
 
-fix:  ## run autopep8/tslint fix
+lint: lintpy lintjs  ## run linter
+
+fixpy:  ## Black python
 	python -m black jupyterlab_commands/ setup.py
+
+fixjs:  ## ESlint Autofix JS
 	cd js; yarn fix
 
-clean: ## clean the repository
-	find . -name "__pycache__" | xargs  rm -rf
-	find . -name "*.pyc" | xargs rm -rf
-	find . -name ".ipynb_checkpoints" | xargs  rm -rf
-	rm -rf .coverage coverage cover htmlcov logs build dist *.egg-info lib node_modules
-	# make -C ./docs clean
+fix: fixpy fixjs  ## run black/tslint fix
+
+check: checks
+checks:  ## run lint and other checks
+	check-manifest
+
+build:  ## build python/javascript
+	python -m build .
+
+develop:  ## install to site-packages in editable mode
+	python -m pip install --upgrade build pip setuptools twine wheel
+	cd js; yarn
+	python -m pip install -e .[develop]
+
+install:  ## install to site-packages
+	python -m pip install .
+
+dist: clean build  ## create dists
+	python -m twine check dist/*
+
+publishpy:  ## dist to pypi
+	python -m twine upload dist/* --skip-existing
+
+publishjs:  ## dist to npm
+	cd js; npm publish || echo "can't publish - might already exist"
+
+publish: dist publishpy publishjs  ## dist to pypi and npm
 
 docs:  ## make documentation
 	make -C ./docs html
 	open ./docs/_build/html/index.html
 
-install:  ## install to site-packages
-	python -m pip install .
-
-serverextension: install ## enable serverextension
-	python -m jupyter serverextension enable --py jupyterlab_commands
-
-js:  ## build javascript
-	cd js; yarn
-	cd js; yarn build:all
-
-labextension: js ## enable labextension
-	cd js; python -m jupyter labextension install .
-
-dist: js  ## create dists
-	rm -rf dist build
-	python setup.py sdist bdist_wheel
-	python -m twine check dist/*
-
-publish: dist  ## dist to pypi and npm
-	python -m twine upload dist/* --skip-existing
-	cd js; npm publish || echo "can't publish - might already exist"
+clean: ## clean the repository
+	find . -name "__pycache__" | xargs  rm -rf
+	find . -name "*.pyc" | xargs rm -rf
+	find . -name ".ipynb_checkpoints" | xargs  rm -rf
+	rm -rf .coverage coverage *.xml build dist *.egg-info lib node_modules .pytest_cache *.egg-info .autoversion .mypy_cache
+	rm -rf jupyterlab_commands/labextension
+	# make -C ./docs clean
+	git clean -fd
 
 # Thanks to Francoise at marmelab.com for this
 .DEFAULT_GOAL := help
@@ -57,4 +71,4 @@ help:
 print-%:
 	@echo '$*=$($*)'
 
-.PHONY: clean install serverextension labextension test tests help docs dist js
+.PHONY: testjs testpy tests test lintpy lintjs lint fixpy fixjs fix checks check build develop install labextension dist publishpy publishjs publish docs clean

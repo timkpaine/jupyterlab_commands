@@ -1,69 +1,64 @@
-from setuptools import setup, find_packages
 from codecs import open
 from os import path
 
-from jupyter_packaging import (
-    create_cmdclass,
-    install_npm,
-    ensure_targets,
-    combine_commands,
-    get_version,
-)
+from jupyter_packaging import wrap_installers, npm_builder, get_data_files
+from setuptools import find_packages, setup
 
 pjoin = path.join
-
 name = "jupyterlab_commands"
 here = path.abspath(path.dirname(__file__))
-jshere = path.abspath(path.join(here, "js"))
-version = get_version(pjoin(here, name, "_version.py"))
+jshere = path.abspath(pjoin(path.dirname(__file__), "js"))
 
 with open(path.join(here, "README.md"), encoding="utf-8") as f:
     long_description = f.read().replace("\r\n", "\n")
 
-requires = ["jupyterlab>=3.0.0", "notebook>=6.0.3"]
-
-requires_dev = requires + [
-    "black>=20.",
-    "bump2version>=1.0.0",
-    "flake8>=3.7.8",
-    "flake8-black>=0.2.1",
-    "jupyter_packaging",
-    "mock",
-    "pytest>=4.3.0",
-    "pytest-cov>=2.6.1",
-    "Sphinx>=1.8.4",
-    "sphinx-markdown-builder>=0.5.2",
+requires = [
+    "jupyterlab>=3.0.0",
 ]
 
+requires_test = [
+    "pytest>=4.3.0",
+    "pytest-cov>=2.6.1",
+]
+
+requires_dev = (
+    requires
+    + requires_test
+    + [
+        "black>=20.8b1",
+        "bump2version>=1.0.0",
+        "check-manifest",
+        "flake8>=3.7.8",
+        "flake8-black>=0.2.1",
+        "jupyter_packaging",
+        "Sphinx>=1.8.4",
+        "sphinx-markdown-builder>=0.5.2",
+    ]
+)
+
+# Representative files that should exist after a successful build
+jstargets = [
+    pjoin(jshere, "lib", "index.js"),
+]
 
 data_spec = [
-    # Lab extension installed by default:
     (
         "share/jupyter/labextensions/jupyterlab_commands",
         "jupyterlab_commands/labextension",
         "**",
     ),
-    # Config to enable server extension by default:
-    ("etc/jupyter/jupyter_server_config.d", "jupyter-config", "*.json"),
+    ("etc/jupyter/jupyter_server_config.d", "jupyterlab_comments/extension", "*.json"),
 ]
 
+ensured_targets = [
+    pjoin("jupyterlab_commands", "labextension", "package.json"),
+]
 
-cmdclass = create_cmdclass("js", data_files_spec=data_spec)
-cmdclass["js"] = combine_commands(
-    install_npm(jshere, build_cmd="build:all"),
-    ensure_targets(
-        [
-            pjoin(jshere, "lib", "index.js"),
-            pjoin(jshere, "style", "index.css"),
-            pjoin(here, "jupyterlab_commands", "labextension", "package.json"),
-        ]
-    ),
-)
-
+builder = npm_builder(build_cmd="build", path=jshere)
 
 setup(
     name=name,
-    version=version,
+    version="0.4.2",
     description="Arbitrary python commands for notebooks in JupyterLab",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -81,16 +76,21 @@ setup(
         "Framework :: Jupyter",
         "Framework :: Jupyter :: JupyterLab",
     ],
-    cmdclass=cmdclass,
-    keywords="jupyter jupyterlab",
-    packages=find_packages(
-        exclude=[
-            "tests",
-        ]
+    platforms="Linux, Mac OS X, Windows",
+    keywords=["Jupyter", "Jupyterlab"],
+    cmdclass=wrap_installers(
+        post_develop=builder, pre_dist=builder, ensured_targets=ensured_targets
     ),
-    zip_safe=False,
+    data_files=get_data_files(data_spec),
+    packages=find_packages(),
+    install_requires=requires,
+    test_suite="jupyterlab_commands.tests",
+    tests_require=requires_test,
     extras_require={
         "dev": requires_dev,
+        "develop": requires_dev,
     },
+    include_package_data=True,
+    zip_safe=False,
     python_requires=">=3.7",
 )
