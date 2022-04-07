@@ -1,6 +1,6 @@
 {
   "name": "jupyterlab_commands",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Arbitrary python commands for notebooks in JupyterLab.",
   "author": "Tim Paine",
   "main": "lib/index.js",
