@@ -8,6 +8,7 @@ include pyproject.toml
 include Makefile
 
 include jupyterlab_commands/extension/jupyterlab_commands.json
+recursive-include jupyterlab_commands/labextension *.*
 
 # grab js
 graft js

@@ -58,7 +58,7 @@ builder = npm_builder(build_cmd="build", path=jshere)
 
 setup(
     name=name,
-    version="0.4.2",
+    version="0.3.3",
     description="Arbitrary python commands for notebooks in JupyterLab",
     long_description=long_description,
     long_description_content_type="text/markdown",
