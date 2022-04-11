@@ -1,6 +1,6 @@
 {
   "name": "jupyterlab_commands",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Arbitrary python commands for notebooks in JupyterLab.",
   "author": "Tim Paine",
   "main": "lib/index.js",
@@ -13,7 +13,7 @@
   "scripts": {
     "build:babel": "babel src/ --source-maps --out-dir lib/",
     "build:lab": "jupyter labextension build .",
-    "build": "npm-run-all build:*",
+    "build": "npm-run-all clean build:*",
     "clean": "rimraf lib ../jupyterlab_commands/labextension",
     "fix": "yarn lint --fix",
     "lint": "eslint -c .eslintrc.js --ext .js src/ tests/",
