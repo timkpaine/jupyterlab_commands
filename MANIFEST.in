@@ -7,8 +7,10 @@ include setup.cfg
 include pyproject.toml
 include Makefile
 
-include jupyterlab_commands/extension/jupyterlab_commands.json
-recursive-include jupyterlab_commands/labextension *.*
+graft ipydagred3
+graft jupyterlab_commands/extension
+graft jupyterlab_commands/labextension
+graft jupyterlab_commands/nbextension
 
 # grab js
 graft js
