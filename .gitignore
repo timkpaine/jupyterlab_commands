@@ -166,11 +166,11 @@ ENV/
 .vscode
 
 .DS_Store
-yarn.lock
 .autoversion
 docs/api
 docs/index.md
 python_junit.xml
 *.tsbuildinfo
+.vscode
 
 jupyterlab_commands/labextension
