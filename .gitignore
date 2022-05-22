@@ -162,6 +162,9 @@ ENV/
 # mypy
 .mypy_cache/
 
+# Editor
+.vscode
+
 .DS_Store
 yarn.lock
 .autoversion
@@ -169,4 +172,5 @@ docs/api
 docs/index.md
 python_junit.xml
 *.tsbuildinfo
+
 jupyterlab_commands/labextension
