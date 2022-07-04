@@ -1,10 +1,10 @@
 import json
 import tornado.web
-from notebook.base.handlers import IPythonHandler
-from notebook.utils import url_path_join
+from jupyter_server.base.handlers import JupyterHandler
+from jupyter_server.utils import url_path_join
 
 
-class CommandsHandler(IPythonHandler):
+class CommandsHandler(JupyterHandler):
     def initialize(self, commands=None):
         self.commands = commands
 
@@ -27,7 +27,7 @@ class CommandsHandler(IPythonHandler):
             self.finish("{}")
 
 
-class CommandsListHandler(IPythonHandler):
+class CommandsListHandler(JupyterHandler):
     def initialize(self, commands=None):
         self.commands = commands
 
