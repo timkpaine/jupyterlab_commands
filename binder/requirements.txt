@@ -1,2 +1,2 @@
-jupyterlab_commands==0.3.4
+jupyterlab_commands==0.3.5
 jupyterlab>=3.5
