@@ -35,21 +35,21 @@ async function activate(app, docManager, palette, browser) {
           try {
             // Try to execute command, and show dialog with info when done
             const folder = browser.tracker.currentWidget.model.path || "";
-            
+
             if (!app.shell.currentWidget) {
               // need a current widget
               return;
             }
-            
+
             const context = docManager.contextForWidget(app.shell.currentWidget);
-            
+
             let path = "";
             let model = {};
             if (context) {
               path = context.path;
               model = context.model.toJSON();
             }
-            
+
             // eslint-disable-next-line no-shadow
             const res = await request("post", `${PageConfig.getBaseUrl()}commands/run?command=${encodeURI(command)}`, {}, JSON.stringify({folder, path, model}));
             if (res.ok) {
