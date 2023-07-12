@@ -7,6 +7,7 @@ Support for arbitrary python commands in the command palette.
 [![PyPI](https://img.shields.io/pypi/l/jupyterlab_commands.svg)](https://pypi.python.org/pypi/jupyterlab_commands)
 [![PyPI](https://img.shields.io/pypi/v/jupyterlab_commands.svg)](https://pypi.python.org/pypi/jupyterlab_commands)
 [![npm](https://img.shields.io/npm/v/jupyterlab_commands.svg)](https://www.npmjs.com/package/jupyterlab_commands)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/timkpaine/jupyterlab_commands/main?urlpath=lab)
 
 ## About
 
@@ -25,14 +26,14 @@ jupyter serverextension enable --py jupyterlab_commands
 
 ## Example 
 
-#### jupyter_notebook_config.py
+#### jupyter_lab_config.py
 
 ```python
 def convertMe(request, *args, **kwargs):
     import subprocess, tornado, os, os.path, json
     data = json.loads(tornado.escape.json_decode(request.body))
     path = os.path.join(os.getcwd(), data['path'])
-    subprocess.run(["jupyter", "nbconvert", path, '--template', '/Users/theocean154/.jupyter/test.tpl', '--to', 'html'])
+    subprocess.run(["jupyter", "nbconvert", path, '--to', 'html'])
     return {'body': 'ok'}
 
 c.JupyterLabCommands.commands = {'sample_command': convertMe}

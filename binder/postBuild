@@ -1,0 +1,11 @@
+#!/bin/bash
+jupyter server extension enable --py jupyterlab
+
+mkdir -p ~/.jupyter
+
+printf "
+def sample(request, *args, **kwargs):
+    import tornado
+    return {'body': tornado.escape.json_decode(request.body)}
+c.JupyterLabCommands.commands = {'sample_command': sample}
+" >> ~/.jupyter/jupyter_lab_config.py
