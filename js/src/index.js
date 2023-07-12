@@ -24,34 +24,46 @@ async function activate(app, docManager, palette, browser) {
             buttons: [Dialog.cancelButton(), Dialog.okButton({label: "Ok"})],
             title: `Execute ${command}?`,
           });
+
           if (result.button.label === "Cancel") {
             return;
           }
 
-          const folder = browser.defaultBrowser.model.path || "";
+          let ok = false;
+          let body = "An unexpected error occurred";
 
-          if (!app.shell.currentWidget) {
-            // need a current widget
-            return;
-          }
-
-          const context = docManager.contextForWidget(app.shell.currentWidget);
-
-          let path = "";
-          let model = {};
-          if (context) {
-            path = context.path;
-            model = context.model.toJSON();
-          }
-
-          // eslint-disable-next-line no-shadow
-          const res = await request("post", `${PageConfig.getBaseUrl()}commands/run?command=${encodeURI(command)}`, {}, JSON.stringify({folder, path, model}));
-          if (res.ok) {
-            const resp = res.json();
-            let body = "";
-            if (resp) {
-              body = resp.body;
+          try {
+            // Try to execute command, and show dialog with info when done
+            const folder = browser.tracker.currentWidget.model.path || "";
+            
+            if (!app.shell.currentWidget) {
+              // need a current widget
+              return;
             }
+            
+            const context = docManager.contextForWidget(app.shell.currentWidget);
+            
+            let path = "";
+            let model = {};
+            if (context) {
+              path = context.path;
+              model = context.model.toJSON();
+            }
+            
+            // eslint-disable-next-line no-shadow
+            const res = await request("post", `${PageConfig.getBaseUrl()}commands/run?command=${encodeURI(command)}`, {}, JSON.stringify({folder, path, model}));
+            if (res.ok) {
+              const resp = res.json();
+              body = "No output returned.";
+              if (resp) {
+                body = resp.body;
+              }
+              ok = true;
+            }
+          } catch (e) {
+            body = e.toString();
+          }
+          if (ok) {
             await showDialog({
               body,
               buttons: [Dialog.okButton({label: "Ok"})],
