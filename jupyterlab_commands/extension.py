@@ -49,10 +49,7 @@ def load_jupyter_server_extension(nb_server_app):
     base_url = web_app.settings["base_url"]
 
     host_pattern = ".*$"
-    nb_server_app.log.info(
-        "Installing jupyterlab_commands handler on path %s"
-        % url_path_join(base_url, "commands")
-    )
+    nb_server_app.log.info("Installing jupyterlab_commands handler on path %s" % url_path_join(base_url, "commands"))
 
     nb_server_app.log.info("Available commands: %s" % ",".join(k for k in commands))
     web_app.add_handlers(

@@ -27,18 +27,18 @@ tests: testpy testjs ## run the tests
 ###########
 # Linting #
 ###########
-lintpy:  ## Black/flake8 python
-	python -m ruff jupyterlab_commands setup.py
-	python -m black --check jupyterlab_commands setup.py
+lintpy:  ## lint python with ruff
+	python -m ruff check jupyterlab_commands
+	python -m ruff format --check jupyterlab_commands
 
 lintjs:  ## ESlint javascript
 	cd js; yarn lint
 
 lint: lintpy lintjs  ## run linter
 
-fixpy:  ## Black python
-	python -m ruff jupyterlab_commands setup.py --fix
-	python -m black jupyterlab_commands/ setup.py
+fixpy:  ## autoformat python with ruff
+	python -m ruff check --fix jupyterlab_commands
+	python -m ruff format jupyterlab_commands
 
 fixjs:  ## ESlint Autofix JS
 	cd js; yarn fix
