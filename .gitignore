@@ -157,3 +157,7 @@ $RECYCLE.BIN/
 # Notebook and lab extensions
 jupyterlab_commands/labextension/*.tgz
 jupyterlab_commands/labextension
+
+AGENTS.md
+ROADMAP.md
+
